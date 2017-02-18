@@ -1,4 +1,4 @@
-# AWS Elastic Beanstalk Wordpress Development & Deployment
+# Wordpress Docker Development & Deployment on AWS Elastic Beanstalk
 
 - [Introduction](#introduction)
 - [Requirements](#requirements)
