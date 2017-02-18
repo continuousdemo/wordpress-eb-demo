@@ -1,0 +1,51 @@
+environment=develop
+dir.vendor=./vendor
+phinx.bin=${dir.vendor}/bin/phinx
+server_hostname=http://192.168.99.100/
+
+db_hostname=192.168.99.100
+db_port=3306
+db_name=wordpress
+db_username=root
+db_password=password
+s3_backup_url=s3://backup-bucket/db-backup-updraftplus.zip
+s3_media_url=s3://backup-bucket/media-backup-updraftplus.zip
+
+wp.theme=twentyeleven
+wp.plugins=business-profile,contact-form-7
+
+# Behat configuration
+# -------------------
+
+# The location of the Behat executable.
+behat.bin = ${project.basedir}/vendor/bin/behat
+
+# The location of the Behat tests.
+behat.dir = ${project.basedir}/tests
+
+# The location of the Behat configuration template.
+behat.yml.template = ${behat.dir}/behat.yml.dist
+
+# The location of the generated Behat configuration file.
+behat.yml.path = ${behat.dir}/behat.yml
+
+# The base URL to use in Behat tests.
+behat.base_url = http://192.168.99.100/
+
+# The browser to use for testing, either 'firefox' or 'chrome'.
+behat.browser_name = chrome
+
+# The port of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_port = 4444
+
+# The URL of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_url = http://192.168.99.100:${behat.webdriver_port}/wd/hub
+
+# The location to search for Behat subcontexts.
+behat.subcontexts.path = ${website.modules.dir}
+
+# The output format to use for Behat tests, either 'progress' or 'pretty'.
+behat.formatter.name = progress
+
+# The location of the test files.
+behat.files.path = ${behat.dir}/fixtures/files

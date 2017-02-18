@@ -1,0 +1,257 @@
+<project name="wordpress" default="help" basedir=".">
+
+    <if>
+        <available file="${project.basedir}/build.local.properties" />
+        <then>
+            <echo message="Using local properties." /> 
+            <property file="${project.basedir}/build.local.properties" />
+        </then>
+    </if>
+    
+    <property file="${project.basedir}/build.properties" />
+
+    <target name="help" description="List available targets">
+	<exec executable="./vendor/bin/phing"
+              passthru="true">
+            <arg value="-l"/>
+        </exec>
+    </target>
+
+    <target name="get-env" description="Get the current environment">
+        <!-- has the environment been set already? -->
+        <if>
+            <not>
+                <isset property="environment" />
+            </not>
+            <then>
+		<fail message="Environment must be set to develop, staging or production" />
+            </then>
+        </if>
+	<echo message="Environment set to: ${environment}" />
+    </target>
+
+    <target name="wp-root-copy" description="Copy root files info WP root folder">
+      <echo message="Copying root files in wp folder ..." /> 
+      <exec command="cp -Rvpf wp-root/* wp/" />
+      <exec command="cp -Rvpf wp-root/.htaccess wp/" />
+    </target>
+
+    <target name="wp-plugins-activate" description="Activate Wordpress plugins">
+      <foreach list="${wp.plugins}" delimiter="," param="plugin" target="wp-plugin-activate" />
+    </target>
+
+    <target name="wp-option-site" description="Set the WP home and site URL">
+      <echo message="Setting home to ${server_hostname}" /> 
+      <exec command="${project.basedir}/vendor/bin/wp option update home '${server_hostname}' --path=${project.basedir}/wp --allow-root" />
+      <echo message="Setting site url to ${server_hostname}" /> 
+      <exec command="${project.basedir}/vendor/bin/wp option update siteurl '${server_hostname}' --path=${project.basedir}/wp --allow-root" />
+    </target>
+
+    <target name="wp-plugin-activate" description="Activate plugin">
+      <echo message="Activating plugin: ${plugin}" /> 
+      <exec command="pwd ; ${project.basedir}/vendor/bin/wp plugin activate ${plugin} --path=${project.basedir}/wp --allow-root" passthru="true" />
+    </target>
+
+    <target name="wp-theme-activate" description="Activate theme">
+      <echo message="Activating theme: ${wp.theme}" /> 
+      <exec command="pwd ; ${project.basedir}/vendor/bin/wp theme activate ${wp.theme} --path=${project.basedir}/wp --allow-root" passthru="true" />
+    </target>
+
+    <target name="wp-clear-cache" description="Flush the WP cache">
+      <echo message="Clear wp cache" /> 
+      <exec command="${project.basedir}/vendor/bin/wp cache flush --path=${project.basedir}/wp --allow-root" passthru="true" />
+      <exec command="${project.basedir}/vendor/bin/wp total-cache flush all --path=${project.basedir}/wp --allow-root" passthru="true" />
+    </target>
+
+    <target name="wp-behat-admin-update" description="Update WP admin user (for develop only)">
+    <if>
+	<or>
+          <equals arg1="${environment}" arg2="develop" />
+	</or>
+        <then>
+          <echo message="Updating wp admin pass for behat ..." /> 
+	  <exec command="${project.basedir}/vendor/bin/wp user update admin --display_name=Admin --user_pass=password --path=${project.basedir}/wp --allow-root" passthru="true"/>
+        </then>
+	<else>
+          <echo message="Not in development environment" />
+	</else> 
+    </if>
+    </target>
+
+    <target name="wp-behat-qa-users" description="Create users for behat tests (for develop/staging only)">
+    <if>
+	<or>
+          <equals arg1="${environment}" arg2="develop" />
+          <equals arg1="${environment}" arg2="staging" />
+	</or>
+        <then>
+          <echo message="Creating wp qa users for behat ..." /> 
+	  <exec command="${project.basedir}/vendor/bin/wp user create editor-qa editor-qa@continuous.lu --display_name=QA-Editor --user_pass=password --role=administrator --path=${project.basedir}/wp --allow-root"  passthru="true" />
+	  <exec command="${project.basedir}/vendor/bin/wp user create another-user another-user@continuous.lu --display_name=QA-Editor --user_pass=password --role=administrator --path=${project.basedir}/wp --allow-root"  passthru="true" />
+        </then>
+	<else>
+          <echo message="Not in development environment" />
+	</else> 
+    </if>
+    </target>
+
+    <target name="wp-behat-delete-qa-users" description="Delete QA users for behat tests">
+       <echo message="Deleting wp qa users for behat ..." /> 
+       <exec command="${project.basedir}/vendor/bin/wp user delete editor-qa --yes --path=${project.basedir}/wp --allow-root"  passthru="true" />
+       <exec command="${project.basedir}/vendor/bin/wp user delete another-user --yes --path=${project.basedir}/wp --allow-root"  passthru="true" />
+    </target>
+
+    <target name="wp-no-bot" description="Set no bot in .htaccess (only in development and staging)">
+       <exec command="./scripts/htaccess-no-bot.sh" passthru="true" />
+    </target>
+
+    <target name="wp-ssl-activate" description="Activate SSL plugin">
+       <exec command="./scripts/activate-ssl.sh" passthru="true" />
+    </target>
+
+    <target name="wp-composer-plugins-update" description="Install the wpackagist plugins into the WP folder">
+      <echo message="Running composer wp plugin update ..." /> 
+      <exec command="composer.phar update" />
+    </target>
+
+    <target name="wp-symlink-themes" description="Symlink the themes folder (only used in development environment)">
+    <if>
+        <equals arg1="${environment}" arg2="develop" />
+        <then>
+          <echo message="Symlink themes ..." /> 
+	  <exec command="mv ./wp/wp-content/themes/* ./wp-content/themes/" passthru="true"/>
+	  <exec command="rm -rf ./wp/wp-content/themes" passthru="true"/>
+	  <exec command="ln -s ../../wp-content/themes/ ./wp/wp-content" passthru="true" />
+        </then>
+	<else>
+          <echo message="Not in development environment" />
+	</else> 
+    </if>
+    </target>
+
+    <target name="wp-copy-themes" description="Copy themes into WP themes folder (only used in build process)">
+      <echo message="Adding custom themes ..." /> 
+      <exec command="cp -Rvpf wp-content/themes/* wp/wp-content/themes" />
+    </target>
+
+    <target name="wp-symlink-plugins" description="Symlink the pluginss folder (only used in development environment)">
+    <if>
+        <equals arg1="${environment}" arg2="develop" />
+        <then>
+          <echo message="Symlink plugins ..." /> 
+	  <exec command="mv ./wp/wp-content/plugins/* ./wp-content/plugins/" passthru="true" />
+	  <exec command="rm -rf ./wp/wp-content/plugins" passthru="true" />
+	  <exec command="ln -s ../../wp-content/plugins/ ./wp/wp-content" passthru="true" />
+        </then>
+	<else>
+          <echo message="Not in development environment" />
+	</else> 
+    </if>
+    </target>
+
+    <target name="wp-copy-plugins" description="Copy plugins into WP plugins folder (only used in build process)">
+      <echo message="Adding custom plugins ..." /> 
+      <exec command="cp -Rvpf wp-content/plugins/* wp/wp-content/plugins" />
+    </target>
+
+    <target name="drop-db" description="Drop the WP database">
+	<echo>${db_hostname}</echo>
+        <echo file="./data/db/drop.sql">DROP DATABASE IF EXISTS `${db_name}`;</echo>
+	<pdosqlexec url="mysql:host=${db_hostname}" userid="${db_username}" password="${db_password}">
+            <transaction src="./data/db/drop.sql"/>
+        </pdosqlexec>
+
+        <delete file="${project.basedir}/data/db/drop.sql" quiet="true"/>
+    </target>
+
+    <target name="init-db" description="Create Database and Grants">
+        <echo file="${project.basedir}/data/db/create.sql">
+            CREATE DATABASE IF NOT EXISTS ${db_name};
+            GRANT USAGE ON *.* TO '${db_username}'@'%' IDENTIFIED BY '${db_password}';
+            GRANT UPDATE,CREATE,REFERENCES,ALTER,LOCK TABLES,CREATE VIEW,CREATE
+            ROUTINE,TRIGGER,INSERT,DELETE,DROP,INDEX,CREATE TEMPORARY TABLES,EXECUTE,SHOW VIEW,ALTER ROUTINE,SELECT ON
+            `${db_name}`.* TO '${db_username}'@'%';
+        </echo>
+
+	<pdosqlexec url="mysql:host=${db_hostname}" userid="${db_username}" password="${db_password}">
+            <transaction src="${project.basedir}/data/db/create.sql"/>
+        </pdosqlexec>
+
+        <delete file="${project.basedir}/data/db/create.sql" quiet="true"/>
+    </target>
+
+    <target name="db-migration" description="Update the database version with last backup">
+	<available file="/tmp/backup.sql" type="file" property="db.exist" />
+	<if>
+	    <isset property="db.exist"/>
+	    <then>
+		<pdosqlexec url="mysql:host=${db_hostname};dbname=${db_name}" userid="${db_username}" password="${db_password}">
+        	    <transaction src="/tmp/backup.sql"/>
+        	</pdosqlexec>
+        	<exec command="rm -f /tmp/backup.sql.gz" passthru="true"/>
+	    </then>
+	</if>
+    </target>
+
+    <target name="wp-get-s3-backup" description="Get the S3 backup">
+      <echo message="Getting S3 Wordpress backup at ${s3_backup_url}" /> 
+      <exec command="rm -f /tmp/backup.sql.gz ; aws s3 --region eu-central-1 cp ${s3_backup_url} /tmp/backup.sql.gz" passthru="true"/>
+      <exec command="gunzip -f /tmp/backup.sql.gz" passthru="true"/>
+    </target>
+
+    <target name="wp-get-s3-media" description="Get the S3 Media">
+      <echo message="Getting S3 Wordpress Media at ${s3_media_url}" /> 
+      <exec command="rm -f /tmp/media.zip ; aws s3 --region eu-central-1 cp ${s3_media_url} /tmp/media.zip" passthru="true"/>
+      <exec command="unzip -u /tmp/media.zip -d ${project.basedir}/wp/wp-content" passthru="true"/>
+    </target>
+
+    <target name="reset-db" description="Reset the Database" depends="drop-db, init-db"/>
+
+    <target name="setup">
+      <if>
+	<equals arg1="${environment}" arg2="develop" />
+        <then>
+    	  <phingcall target="setup-dev">
+          </phingcall>
+        </then>
+        <elseif>
+	  <equals arg1="${env.environment}" arg2="staging" />
+          <then>
+    	    <phingcall target="setup-staging">
+            </phingcall>
+          </then>
+        </elseif>
+        <elseif>
+	  <equals arg1="${env.environment}" arg2="production" />
+          <then>
+    	    <phingcall target="setup">
+            </phingcall>
+          </then>
+        </elseif>
+
+        <else>
+	  <fail message="ERROR: environment variable not set" /> 
+        </else>
+      </if>
+    </target>
+
+    <target name="setup-base"
+            description="targets that always need to be done"
+            depends="wp-get-s3-backup, wp-get-s3-media, wp-root-copy, wp-copy-plugins"/>
+    
+    <target name="setup-production"
+            description="Setup for production"
+            depends="setup-base, wp-option-site, wp-clear-cache, wp-plugins-activate, wp-copy-themes, wp-theme-activate"/>
+
+    <target name="setup-staging"
+            description="Setup for staging"
+            depends="setup-base, db-migration, wp-option-site, wp-clear-cache, wp-plugins-activate, wp-theme-activate, wp-no-bot"/>
+
+    <target name="setup-dev"
+            description="Setup for development"
+            depends="setup-base, db-migration, wp-option-site, wp-clear-cache, wp-plugins-activate, wp-theme-activate, wp-behat-admin-update, wp-behat-qa-users"/>
+
+    <target name="setup-test"
+            description="targets for testing"
+            depends="setup-dev"/>
+</project>

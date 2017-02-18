@@ -1,0 +1,39 @@
+{
+    "name": "continuousphp/wordpress-eb-demo",
+    "description": "Wordpress Elastic Beanstalk Demo",
+    "repositories": [
+      {
+        "type": "composer",
+        "url": "https://wpackagist.org"
+      }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "johnpbloch/wordpress": ">=4.7.2",
+	"composer/installers": "~1.0",
+        "wpackagist-plugin/contact-form-7": "4.6.1",
+        "wpackagist-plugin/business-profile": "1.1.1",
+	"wpackagist-theme/vanilla": "1.3.5",
+        "robmorgan/phinx": "~0.6.0",
+        "wp-cli/wp-cli": "^1.0",
+        "phing/phing": "~2.14"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "~5.0",
+        "robmorgan/phinx": "~0.6.0",
+        "phing/phing": "~2.14",
+        "behat/behat": "2.5.*@stable",
+        "behat/mink": "1.4.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "*",
+        "behat/mink-selenium2-driver": "*"
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "wordpress-install-dir": "wp",
+	"installer-paths": {
+            "wp/wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+            "wp/wp-content/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    }
+}

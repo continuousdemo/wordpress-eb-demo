@@ -1,0 +1,15 @@
+# behat.yml
+default:
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url:    http://localhost/
+            browser_name: chrome
+            goutte: 
+               guzzle_parameters:
+                    verify: false
+                    ssl.certificate_authority: false
+            selenium2: 
+               wd_host: 'http://selenium:4444/wd/hub'
+
+imports:
+  - behat.params.yml
