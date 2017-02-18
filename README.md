@@ -1,3 +1,5 @@
+[![Build Status](https://status.continuousphp.com/git-hub/continuousdemo/wordpress-eb-demo?token=685bd047-749e-40c5-9678-7dc1048c2308)](https://continuousphp.com/git-hub/continuousdemo/wordpress-eb-demo)
+
 # WordPress Docker Development with Deployment on AWS Elastic Beanstalk
 
 - [Introduction](#introduction)
