@@ -167,7 +167,7 @@ define('NONCE_SALT',       $_SERVER["NONCE_SALT"]);
 
 Once finished, copy the wp/wp-config.php in the wp-root/ folder, we will need it for the deployment provisioning. 
 
-Let's export the environment variables for our development environents:
+Let's export the environment variables for our development environment:
 
 ```
 export MYSQL_ADDON_HOST=192.168.99.100
@@ -219,7 +219,7 @@ Complete the information:
 * Search Engine Visibility: Check discourage search engines from indexing this site
 * Click **Install WordPress**
 
-Your WordPress is now ready to customized.
+Your WordPress is now ready to be customized.
 
 ### Configuring your development environment
 
@@ -235,7 +235,6 @@ We are going to add a few plugins.
 
 * Updraftplus to backup our wordpress assets on S3. 
 * The w3-total-cache Search Engine and Performance Optimization plugin
-* The wordpress-https to enable SSL certificate for our site.
 
 For this we add the "wpackagist-plugin/updraftplus", "wpackagist-plugin/w3-total-cache" and "wpackagist-plugin/wordpress-https" dependencies in our composer.json file like:
 
@@ -248,20 +247,19 @@ For this we add the "wpackagist-plugin/updraftplus", "wpackagist-plugin/w3-total
 "wpackagist-plugin/business-profile": "1.1.1",
 "wpackagist-plugin/updraftplus": "1.12.32",
 "wpackagist-plugin/w3-total-cache": "0.9.5.1",
-"wpackagist-plugin/wordpress-https": "3.3.6",
 "robmorgan/phinx": "~0.6.0",
 "wp-cli/wp-cli": "^1.0",
 "phing/phing": "~2.14"
 },
 ```
 
-Edit the build.properties and add our new plugins into the wp.plugins variables, this varibales is used by the Phing target wp-plugins-activate.
+Edit the **build.properties** and add our new plugins into the wp.plugins variables, this varibales is used by the Phing target wp-plugins-activate.
 
 ```
-wp.plugins=business-profile,contact-form-7,updraftplus,w3-total-cache,wordpress-https
+wp.plugins=business-profile,contact-form-7,updraftplus,w3-total-cache
 ```
 
-Do the same to your build.local.properties.
+Do the same to your **build.local.properties**.
 
 Run a composer update to install the plugin.
 
@@ -269,7 +267,7 @@ Run a composer update to install the plugin.
 composer.phar update
 ```
 
-Activate the plugins:
+Then activate the plugins:
 
 ```
 ./vendor/bin/phing wp-plugins-activate
@@ -295,13 +293,13 @@ If you need to install a Plugin which isn't available on WordPress Packagist or 
 
 ### Themes Installation
 
-Now let's install a Themes, we do the same, adding it to our composer.json and run composer update.
+Now let's install a Theme, we do the same, adding it to our **composer.json** and run ```composer update```.
 
 ```
 "wpackagist-theme/vanilla": "1.3.5"
 ```
 
-Update the theme in th build.properties and build.local.properties
+Update the theme in the **build.properties** and **build.local.properties**
 
 ```
 wp.theme=vanilla
@@ -339,7 +337,7 @@ Author URI: https://www.johndoe-dumy-plugin.com
 
 Open your browser to http://192.168.99.100/wp-admin/plugins.php and your plugin is displayed.
 
-Add it to your build.properties and build.local.properties:
+Add it to your **build.properties** and **build.local.properties**:
 
 ```
 wp.plugins=business-profile,contact-form-7,updraftplus,w3-total-cache,wordpress-https,dumy-plugin
@@ -351,7 +349,7 @@ And let's activate it:
 ./vendor/bin/phing wp-plugins-activate
 ```
 
-Same apply to the theme development. Be sure to only commit your themes and plugins of the root wp-content folder, not the ones installed by composer. 
+Same apply to the theme development. **Be sure to only commit your themes and plugins of the root wp-content folder, not the ones installed by composer**. 
 
 So we have our base WordPress development ready, now we are going to create our staging environment on AWS Elastic BeanStalk.
 
@@ -361,7 +359,7 @@ So we have our base WordPress development ready, now we are going to create our 
 
 AWS recommends the separation of responsibilities, and therefore you should create a separate AWS account for every environment you might require.
 
-This tutorial explains Wordpress deployment in a staging environment. 
+This tutorial explains Wordpress deployment in a **staging** environment. 
 
 So let's start and create an AWS account for your staging environment.
 
