@@ -52,6 +52,7 @@ So let's start!
 
 ## Requirements
 
+* docker
 * docker-compose
 * composer
 * AWS account
