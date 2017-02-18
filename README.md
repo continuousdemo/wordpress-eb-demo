@@ -16,7 +16,7 @@
     - [Plugin Installation](#plugin-installation)
     - [Running the behat tests](#running-behat-tests)
     - [Themes Installation](#themes-installation)
-  - [Developing a dumy plugin](#developing-a-dumy-plugin)
+    - [Developing a dumy plugin](#developing-a-dumy-plugin)
 - [Set-up AWS Elastic BeanStalk Staging environment](#set-up-aws-elastic-beanstalk-staging-environment)
   - [Set-up the AWS environment accounts](#set-up-the-aws-environment-accounts)
   - [Set-up the WordPress backup S3 bucket](#set-up-the-wordpress-backup-s3-bucket)
@@ -350,7 +350,7 @@ We have now "Just another WordPress site"!
 
 Now, let's develop a dummy-plugin.
 
-### Developing a dumy plugin
+#### Developing a dumy plugin
 
 Let's develop a dumy plugin to show how it works, for this we create a dumy-plugin plugin into the root wp-content/plugins.
 
