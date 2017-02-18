@@ -19,8 +19,8 @@
   - [Developing a dumy plugin](#developing-a-dumy-plugin)
 - [Set-up AWS Elastic BeanStalk Staging environment](#set-up-aws-elastic-beanstalk-staging-environment)
   - [Set-up the AWS environment accounts](#set-up-the-aws-environment-accounts)
-  - [Set-up the backup S3 bucket](#set-up-the-backup-s3-bucket)
-  - [Set-up the backup S3 bucket IAM policy](#set-up-the-backup-s3-bucket-iam-policy)
+  - [Set-up the WordPress backup S3 bucket](#set-up-the-wordpress-backup-s3-bucket)
+  - [Set-up the WordPress backup S3 bucket IAM policy](#set-up-the-wordpress-backup-s3-bucket-iam-policy)
   - [Configuring the UpdraftPlus WordPress plugin](#configuring-the-updraftplus-wordpress-plugin)
   - [Creating the EC2 Key Pair](#creating-the-ec2-key-pair)
   - [Creating the MySQL DB Instance](#creating-the-mysql-db-instance)
@@ -311,7 +311,7 @@ Then run behat with:
 
 #### Themes Installation
 
-Now let's install a Theme, we do the same, adding it to our **composer.json** and run ```composer update```.
+Now let's install a theme, we do the same, adding it to our **composer.json** and run ```composer update```.
 
 ```
 "wpackagist-theme/vanilla": "1.3.5"
@@ -329,7 +329,7 @@ And let's activate it:
 ./vendor/bin/phing wp-theme-activate 
 ```
 
-Let's change our behat test by editing the **homepage.feature** file with:
+Let's change our behat test by editing the **tests/features/homepage.feature** file with:
 
 ```
 @home
@@ -337,7 +337,7 @@ Feature: As a visitor I should be able to load the home page
 
 Scenario: Home page loads
 Given I am on the homepage
-Then I should see "Just another WordPress site"
+Then I should see "**Just another WordPress site**"
 ```
 
 and run behat again:
@@ -359,7 +359,7 @@ mkdir ./wp-content/plugins/dumy-plugin
 cd ./wp-content/plugins/dumy-plugin
 ```
 
-And add a dumy-plugin.php file with the following:
+And add a **dumy-plugin.php** file with the following:
 
 ```
 <?php
@@ -407,7 +407,7 @@ So let's start and create an AWS account for your staging environment.
 1. Open [https://aws.amazon.com/](https://aws.amazon.com/), and then choose *Create an AWS Account*.
 2. Follow the online instructions.
 
-### Set-up the backup S3 bucket
+### Set-up the WordPress backup S3 bucket
 
 Let's first create an S3 bucket for your WP backup.
 
@@ -447,7 +447,7 @@ Let's configure the Bucket Polocy.
 ```
 
 
-### Set-up the backup S3 bucket IAM policy
+### Set-up the WordPress backup S3 bucket IAM policy
 
 Let's create an IAM policy to grant UpdraftPlus plugin the permission to upload the backups to your backup S3 bucket. 
 
@@ -520,7 +520,7 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
 
 ### Configuring the UpdraftPlus WordPress plugin
 
-We are now going to configure the UpdraftPlus WordPress plugin, we use this plugin to keep a backup of our database and media, so we can restore any of our environment from any backup.
+We are now going to configure the UpdraftPlus WordPress plugin. We use this plugin to keep a backup of our database and media files, so we can restore any of our environment from any backup.
 
 Open your browser to http://192.168.99.100/wp-admin/plugins.php
 
@@ -537,9 +537,9 @@ Open your browser to http://192.168.99.100/wp-admin/plugins.php
 5. Goto the Current Status Tab
 6. Click on **Backup Now**, ensure all checks are checked.
 
-UpdraftPlus Backup ensure we keep your WordPress State up to date on all environments.
+UpdraftPlus Backup ensure we keep your WordPress state up to date on all environments and be able to restore a version if needed.
 
-Let's open our S3 Backup Bucket my-wordpress-site-backup and get the latest DB backup filename to set our build.local.properties file with the s3_backup_url value.
+Let's open our S3 Backup Bucket my-wordpress-site-backup and get the latest DB backup filename to set our **build.local.properties** file with the s3_backup_url value.
 
 ```
 s3_backup_url=s3://my-wordpress-site-backup/backup_2017-02-16-1006_My_WP_site_1437f9fb506f-db.gz
@@ -565,7 +565,7 @@ As you can see now the wp-get-s3-backup get our backup and reinstall our WordPre
 
 Let's do a test, add a page to our WordPress, make a backup, update the build.local.properties with the new WordPress database backup url and run the **setup-dev** phing target.
 
-Now Let's continue to set our AWS Elastic BeanStalk environment.
+Now let's continue to set our AWS Elastic BeanStalk environment.
 
 ### Creating the EC2 Key Pair
 
@@ -842,7 +842,7 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
       * Region: US West (Oregon)
       * Access Key: \<YOUR_DEPLOYMENT_ACCESS_KEY\>
       * Secret Key: \<YOUR_DEPLOYMENT_SECRET_KEY\> 
-   4. Still in the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **my-wordpress-site-backup** User Access Key and Secret Key we created in step [Set-up the backup S3 bucket IAM policy](#set-up-the-backup-s3-bucket-iam-policy)
+   4. Still in the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **my-wordpress-site-backup** User Access Key and Secret Key we created in step [Set-up the WordPress backup S3 bucket IAM policy](#set-up-the-wordpress-backup-s3-bucket-iam-policy)
       * Name: my-wordpress-site-backup
       * Region: US West (Oregon)
       * Access Key: \<YOUR_SITE_BACKUP_ACCESS_KEY\> 
