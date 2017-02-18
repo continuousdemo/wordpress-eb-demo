@@ -76,12 +76,12 @@ This WordPress Repository include the following files:
 * [scripts](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/scripts/) with our provisioning scripts  
 * [wp-content](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/wp-content/) with our custom WordPress content 
 * [wp-root](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/wp-root/) with our root configuration WordPress content 
-* [.ebextensions/project.config](https://github.com/continuousdemo/wordpress-eb-demo/blob/.ebextensions/project.config) with the Elastic BeanStalk provisioning script. 
+* [.ebextensions/project.config](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/.ebextensions/project.config) with the Elastic BeanStalk provisioning script. 
 * [Dockerfile](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/Dockerfile) with our Docker file 
 * [docker-compose.yml](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/docker-compose.yml) with docker-compose configuration file 
 * [nginx](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/nginx/) with nginx configuration files 
 * [php](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/php/) with php configuration files 
-* [behat.yml](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/behat.yml) with the Behat configuration
+* [behat.yml](https://github.com/continuousdemo/wordpress-eb-demo/blob/master/tests/behat.yml) with the Behat configuration
 
 These are key files to set-up your WordPress installation, development and deployment environement. Feel free to take a look at them to get a better understanding.
 
