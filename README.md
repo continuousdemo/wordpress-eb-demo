@@ -297,7 +297,7 @@ If you need to install a Plugin which isn't available on WordPress Packagist or 
 
 #### Running the behat tests
 
-To run the behat test locally first, copy the **behat.local.yml.sample** to **tests/behat.local.yml**
+To run the behat test locally first, copy the **behat.local.yml.sample** to **behat.local.yml**
 
 ```
 cp tests/behat.local.yml.sample tests/behat.local.yml
