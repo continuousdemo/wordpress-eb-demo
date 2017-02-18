@@ -1,4 +1,4 @@
-# AWS Elastic Beanstalk Wordpress Deployment
+# AWS Elastic Beanstalk Wordpress Development & Deployment
 
 - [Introduction](#introduction)
 - [Requirements](#requirements)
@@ -95,7 +95,7 @@ composer.phar install
 
 ### Phing environment variables
 
-To set your local development environment copy the build.local.properties.sample to build.local.properties.
+To set your local development environment copy the **build.local.properties.sample** to **build.local.properties**.
 
 ```
 cp build.local.properties.sample build.local.properties
