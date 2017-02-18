@@ -13,8 +13,9 @@
 - [Initializing the Database](#initializing-the-database)
 - [WordPress Base Install](#wordpress-base-install)
 - [Configuring your development environment](#configuring-your-development-environment)
-- [Plugin Installation](#plugin-installation)
-- [Themes Installation](#themes-installation)
+  - [Plugin Installation](#plugin-installation)
+  - [Running the behat tests](#running-behat-tests)
+  - [Themes Installation](#themes-installation)
 - [Developing a dumy plugin](#developing-a-dumy-plugin)
 - [Set-up AWS Elastic BeanStalk Staging environment](#set-up-aws-elastic-beanstalk-staging-environment)
 - [Set-up the AWS environment accounts](#set-up-the-aws-environment-accounts)
@@ -293,7 +294,21 @@ composer.phar update
 
 If you need to install a Plugin which isn't available on WordPress Packagist or that you have to build a custom plugin, add it into the project root in wp-content folder, it is symlinked into the WordPress install, so you can develop or make it available to WordPress.
 
-### Themes Installation
+#### Running the behat tests
+
+To run the behat test locally first, copy the **behat.local.yml.sample** to **tests/behat.local.yml**
+
+```
+cp tests/behat.local.yml.sample tests/behat.local.yml
+```
+
+Then run behat with:
+
+```
+./vendor/bin/behat -c tests/behat.local.yml
+```
+
+#### Themes Installation
 
 Now let's install a Theme, we do the same, adding it to our **composer.json** and run ```composer update```.
 
@@ -312,6 +327,27 @@ And let's activate it:
 ```
 ./vendor/bin/phing wp-theme-activate 
 ```
+
+Let's change our behat test by editing the **homepage.feature** file with:
+
+```
+@home
+Feature: As a visitor I should be able to load the home page
+
+Scenario: Home page loads
+Given I am on the homepage
+Then I should see "Just another WordPress site"
+```
+
+and run behat again:
+
+```
+./vendor/bin/behat -c tests/behat.local.yml
+```
+
+We have now "Just another WordPress site"!
+
+Now, let's develop a dummy-plugin.
 
 ### Developing a dumy plugin
 
