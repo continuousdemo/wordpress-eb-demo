@@ -839,24 +839,19 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
    3. In the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **deployment.staging** User Access Key and Secret Key we created in step [Set-up the IAM permissions](#set-up-the-iam-permissions)
       * Name: deployment.staging
       * Region: US West (Oregon)
-      * Access Key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      * Secret Key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      * Access Key: \<YOUR_DEPLOYMENT_ACCESS_KEY\>
+      * Secret Key: \<YOUR_DEPLOYMENT_SECRET_KEY\> 
    4. Still in the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **my-wordpress-site-backup** User Access Key and Secret Key we created in step [Set-up the backup S3 bucket IAM policy](#set-up-the-backup-s3-bucket-iam-policy)
       * Name: my-wordpress-site-backup
       * Region: US West (Oregon)
-      * Access Key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      * Secret Key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      * Access Key: \<YOUR_SITE_BACKUP_ACCESS_KEY\> 
+      * Secret Key: \<YOUR_SITE_BACKUP_SECRET_KEY\>
    5. In the **PHING** section, add the following Phing Target: **wp-composer-plugins-update**
    6. Click on **Next** to move to the Test Settings
 2. In the Test Settings (Step 2):
    1. continuousphp automatically discovers that you have a `behat.yml` and `phpunit.xml` in your repository and creates the testing configuration for you.
    2. Click on the **Behat** configuration panel. In the **PHING** section, select the following Phing Targets: **reset-db** and **setup-test**
    3. Still in the **PHING** section, add the following variables:
-      * MYSQL_ADDON_HOST: 127.0.0.1
-      * MYSQL_ADDON_DB: wordpress
-      * MYSQL_ADDON_USER: root
-      * MYSQL_ADDON_PASSWORD:
-      * SERVER_HOSTNAME: http://localhost/
       * environment: develop
    4. Set the environment variables, Click on the + Next to **ENVIRONMENT VARIABLES**
       * MYSQL_ADDON_HOST: 127.0.0.1
