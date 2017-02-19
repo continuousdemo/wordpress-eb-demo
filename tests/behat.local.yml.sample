@@ -1,0 +1,19 @@
+# behat.yml
+default:
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url:    http://192.168.99.100/
+            browser_name: 'chrome'
+            show_cmd: /Applications/Firefox.app/Contents/MacOS/firefox %s
+            javascript_session: 'selenium2'
+            goutte: 
+               guzzle_parameters:
+                    verify: false
+                    ssl.certificate_authority: false
+
+            selenium2:
+               wd_host: http://192.168.99.100:4444/wd/hub
+               capabilities: {"browserName":"chrome", "platform":"LINUX", "browserVersion":"9", "version": "", "browser": "chrome"}
+
+imports:
+  - behat.params.yml
