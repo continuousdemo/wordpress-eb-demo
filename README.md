@@ -573,7 +573,7 @@ And let's rebuild our development environment:
 AWS_DEFAULT_PROFILE=my-wordpress-site ./vendor/bin/phing setup-dev
 ```
 
-As you can see now the wp-get-s3-backup get our backup and reinstall our WordPress with it, this enable us to make changes to our WordPress, make a backup and restore its state for all our environments.
+As you can see now the wp-get-s3-backup get our backup and reinstall our WordPress database with the db-migration target, this enable us to make changes to our WordPress, make a backup and restore its state for all our environments.
 
 Let's do a test, add a page to our WordPress, make a backup, update the build.local.properties with the new WordPress database backup url and run the **setup-dev** phing target.
 
@@ -601,19 +601,20 @@ chmod 400 my-key-pair.pem
 4. Choose Launch DB Instance. The Launch DB Instance Wizard opens on the Select Engine page.
 5. On the Select Engine page, choose the MySQL icon and then choose Select for the MySQL DB engine for Dev/Test.
 6. On the Specify DB Details page, specify your DB instance information. 
-* DB Instance Class: db.t2.micro
-* Multi-AZ Deployment: No (We are in staging)
-* Allocated Storage: 5 GB
-* Storage Type: Magnetic
-* DB Instance Identifier: staging-my-wordpress-site-db
-* Master Username: wordpress_userdb
-* Master Password: \<YOUR_PASSWORD\>
-* VPC: Select the default VPC
-* Publicly Accessible: No
-* VPC Security Group(s): Create New Security Group 
-* Database Name: staging_my_wordpress_site_db
-* Backup Retention Period: 1
-* Auto Minor Version Upgrade: Yes
+  * DB Instance Class: db.t2.micro
+  * Multi-AZ Deployment: No (We are in staging)
+  * Allocated Storage: 5 GB
+  * Storage Type: Magnetic
+  * DB Instance Identifier: staging-my-wordpress-site-db
+  * Master Username: wordpress_userdb
+  * Master Password: \<YOUR_PASSWORD\>
+  * VPC: Select the default VPC
+  * Publicly Accessible: No
+  * VPC Security Group(s): Create New Security Group 
+  * Database Name: staging_my_wordpress_site_db
+  * Backup Retention Period: 1
+  * Auto Minor Version Upgrade: Yes
+7. Click on **Launch DB Instance**
 
 ### Set-up your Elastic BeanStalk Application
 
@@ -637,8 +638,8 @@ chmod 400 my-key-pair.pem
 7. Choose Configure more options.
 8. Configuration presets: Custom configuration 
 9. Select **Environment settings** and fill in the following:
-  1. Name: Staging
-  2. Domain: my-wordpress-site
+  *. Name: Staging
+  *. Domain: staging-my-wordpress-site
 10. Select **Software settings** and fill in the following **Environment properties**:
   * environment: staging
   * MYSQL_ADDON_DB: staging_my_wordpress_site_db 
@@ -673,7 +674,7 @@ chmod 400 my-key-pair.pem
 
 ### Configuring the DocumentRoot
 
-Now let's configure your DocumentRoot.
+When the environment has been created, let's configure your DocumentRoot.
 
 1. Goto your Elastic Beanstalk application **my-wordpress-site**
 2. Select your environment **Staging**
