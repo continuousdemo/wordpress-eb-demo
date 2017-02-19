@@ -345,7 +345,7 @@ Feature: As a visitor I should be able to load the home page
 
 Scenario: Home page loads
 Given I am on the homepage
-Then I should see "**Just another WordPress site**"
+Then I should see **"Just another WordPress site"**
 ```
 
 and run behat again:
@@ -445,7 +445,7 @@ Let's configure the Bucket Polocy.
     "Sid": "PublicReadGetObject",
     "Effect": "Allow",
     "Principal": {
-	"AWS": "arn:aws:iam::648094104386:root"
+	"AWS": "arn:aws:iam::\<YOUR_AWS_ACCOUNT_ID>\:root"
     },
     "Action": "s3:GetObject",
     "Resource": "arn:aws:s3:::my-wordpress-site-backup/*"
@@ -453,6 +453,8 @@ Let's configure the Bucket Polocy.
 ]
 }
 ```
+
+Note: To get your account ID goto on the AWS My Account.
 
 
 ### Set-up the WordPress backup S3 bucket IAM policy
@@ -523,7 +525,7 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
 5. Select **Attach existing policies directly**
 6. Search for the policy we just made: **my-wordpress-site-backup**
 7. Click Next the Create User 
-8. Save the generated access key in a safe place.
+8. **Save the generated access key in a safe place**.
 9. Choose *Close*.
 
 ### Configuring the UpdraftPlus WordPress plugin
@@ -544,6 +546,8 @@ Open your browser to http://192.168.99.100/wp-admin/plugins.php
 4. Click on **Save Changes**
 5. Goto the Current Status Tab
 6. Click on **Backup Now**, ensure all checks are checked.
+
+Note: If you have an error with updraft folder is not writtable, create the folder and give it permission: ```mkdir wp/wp-content/updraft ; chmod 777 wp/wp-content/updraft```
 
 UpdraftPlus Backup ensure we keep your WordPress state up to date on all environments and be able to restore a version if needed.
 
