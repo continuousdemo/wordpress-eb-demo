@@ -44,7 +44,7 @@ Have you ever wanted to have a staging environement for the validation of your l
 
 Have you ever wanted to have automated test to ensure proper site function before deployments ?
 
-The goal of this project is to have an WordPress environment that let you develop, test, package and deploy an immutable WordPress on different environments like staging and production.
+The goal of this project is to have a WordPress environment that let you develop, test, package and deploy an immutable WordPress on different environments like staging and production.
 
 It is based on docker-compose for the local development, [continuousphp](https://continuousphp.com) for building, testing and deploying on AWS Elastic BeanStalk Infrastructure environments.
 
@@ -61,7 +61,7 @@ So let's start!
 
 ### Prepare your WordPress Repository
 
-Fork and Clone the [WordPress Elastic BeanStalk Demo](https://github.com/continuousdemo/wordpress-eb-demo).
+Fork and clone the [WordPress Elastic BeanStalk Demo](https://github.com/continuousdemo/wordpress-eb-demo).
 
 Because we are going to configure continuousphp in staging environment, we need to create a develop branch, for which we will create a deployment pipeline.
 
@@ -231,7 +231,7 @@ Complete the information:
 
 Your WordPress is now ready to be customized.
 
-Note: you may recieve a 500 Error because a phpmailerException, refresh the page.
+Note: you may recieve a 500 Error because a phpmailerException, just refresh the page.
 
 ### Configuring your development environment
 
@@ -248,7 +248,7 @@ We are going to add a few plugins.
 * Updraftplus to backup our wordpress assets on S3. 
 * The w3-total-cache Search Engine and Performance Optimization plugin
 
-For this we add the "wpackagist-plugin/updraftplus", "wpackagist-plugin/w3-total-cache" and "wpackagist-plugin/wordpress-https" dependencies in our composer.json file like:
+For this we add the "wpackagist-plugin/updraftplus" and "wpackagist-plugin/w3-total-cache" dependencies in our composer.json file like:
 
 ```
 "require": {
@@ -455,7 +455,6 @@ Let's configure the Bucket Polocy.
 ```
 
 Note: To get your account ID goto on the AWS My Account.
-
 
 ### Set-up the WordPress backup S3 bucket IAM policy
 
@@ -902,7 +901,20 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
 
 ## Deploying WordPress
 
-**Deploying WordPress with continuousphp**
+Before Deploying, let's push our changes:
+
+```
+git status
+git add build.properties
+git add composer.json
+git add tests/features/homepage.feature
+git commit -m "Adding plugins and behat tests"
+git push origin develop
+```
+
+A build has started automatically on continuousphp.
+
+**Deploying WordPress manually with continuousphp**
 
 1. Click on the **Play** button on the top right of the project
 2. Select the **develop** branch
@@ -929,7 +941,7 @@ Let's modify our Dumy plugin at ./wp-content/plugins/dumy-plugin/dumy-plugin.php
 git checkout develop
 git add ./wp-content/plugins/dumy-plugin/dumy-plugin.php
 git commit -m "Bumping our Dumy plugin version"
-git push
+git pusih origin develop
 ```
 
 Now, everytime you push to the develop branch, your develop pipeline is triggered and continuousphp builds, tests and deploys your WordPress upon a successful build.
@@ -938,5 +950,6 @@ Now, everytime you push to the develop branch, your develop pipeline is triggere
 
 * The Configuration used in this tutorial is an example and should not be used for production use as is.
 * The Configuration used in this tutorial is a base and should be completed to suit your needs.
+* This Tutorials used AWS Resources which has cost, please delete your Elastic BeanStalk and RDS database when you have finished to avoid cost.
 
 If you like to know more about production configuration or have questions about this tutorial, do not hesitate to contact us using the chat button!
