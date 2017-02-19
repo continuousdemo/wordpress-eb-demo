@@ -445,7 +445,7 @@ Let's configure the Bucket Polocy.
     "Sid": "PublicReadGetObject",
     "Effect": "Allow",
     "Principal": {
-	"AWS": "arn:aws:iam::\<YOUR_AWS_ACCOUNT_ID>\:root"
+	"AWS": "*"
     },
     "Action": "s3:GetObject",
     "Resource": "arn:aws:s3:::my-wordpress-site-backup/*"
@@ -876,7 +876,6 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
       * S3_BACKUP_URL:  \<YOUR_S3_WORDPRESS_DATABASE_BACKUP\> 
       * S3_MEDIA_URL:
       * SERVER_HOSTNAME: http://localhost/
-    5. Optionnaly if you configured the WordPress Security Keys:
       * AUTH_KEY:
       * AUTH_SALT:
       * SECURE_AUTH_KEY:
@@ -885,7 +884,7 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
       * SECURE_AUTH_SALT:
       * LOGGED_IN_SALT:
       * NONCE_SALT:
-   6. Click on **Next** to move to the Package Settings
+   5. Click on **Next** to move to the Package Settings
 3. In the Package Settings (Step 3):
    1. Select **AWS ElasticBeanstalk**
    2. In the **PHING** section, add the following Phing Target: **wp-composer-plugins-update**
