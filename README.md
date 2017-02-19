@@ -937,5 +937,6 @@ Now, everytime you push to the develop branch, your develop pipeline is triggere
 ## Notes
 
 * The Configuration used in this tutorial is an example and should not be used for production use as is.
+* The Configuration used in this tutorial is a base and should be completed to suit your needs.
 
 If you like to know more about production configuration or have questions about this tutorial, do not hesitate to contact us using the chat button!
