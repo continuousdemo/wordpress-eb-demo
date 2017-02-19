@@ -171,6 +171,10 @@ define('NONCE_SALT',       $_SERVER["NONCE_SALT"]);
 
 Once finished, copy the wp/wp-config.php in the wp-root/ folder, we will need it for the deployment provisioning. 
 
+```
+cp wp/wp-config.php wp-root/
+```
+
 Let's export the environment variables for our development environment:
 
 ```
@@ -204,6 +208,8 @@ Keep those keys in a safe place.
 docker-compose up
 ``` 
 
+Note: if you don't daemonize the docker-compose, you will need to open a new terminal, don't forget to export again your environment variables.
+
 #### Initializing the Database
 
 Now let's initialize our WP database.
@@ -224,6 +230,8 @@ Complete the information:
 * Click **Install WordPress**
 
 Your WordPress is now ready to be customized.
+
+Note: you may recieve a 500 Error because a phpmailerException, refresh the page.
 
 ### Configuring your development environment
 
