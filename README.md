@@ -848,19 +848,20 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
 **To configure your deployment pipeline**
 
 1. In the Build Settings (Step 1):
-   1. In the **PHP VERSIONS**, select the PHP versions: **5.6** / **7.0**
+   1. In the **PHP VERSIONS**, select the PHP versions: **7.1**
    2. Set the Document Root to: wp
    3. In the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **deployment.staging** User Access Key and Secret Key we created in step [Set-up the IAM permissions](#set-up-the-iam-permissions)
       * Name: deployment.staging
-      * Region: US West (Oregon)
+      * Region: \<SELECT_YOUR_AWS_REGION\>
       * Access Key: \<YOUR_DEPLOYMENT_ACCESS_KEY\>
       * Secret Key: \<YOUR_DEPLOYMENT_SECRET_KEY\> 
    4. Still in the **CREDENTIALS**, click on the **+**, add the AWS IAM Credential **my-wordpress-site-backup** User Access Key and Secret Key we created in step [Set-up the WordPress backup S3 bucket IAM policy](#set-up-the-wordpress-backup-s3-bucket-iam-policy)
       * Name: my-wordpress-site-backup
-      * Region: US West (Oregon)
+      * Region: \<SELECT_YOUR_AWS_REGION\>
       * Access Key: \<YOUR_SITE_BACKUP_ACCESS_KEY\> 
       * Secret Key: \<YOUR_SITE_BACKUP_SECRET_KEY\>
    5. In the **PHING** section, add the following Phing Target: **wp-composer-plugins-update**
+   6. Uncheck the **Enable caching of Composer packages**
    6. Click on **Next** to move to the Test Settings
 2. In the Test Settings (Step 2):
    1. continuousphp automatically discovers that you have a `behat.yml` and `phpunit.xml` in your repository and creates the testing configuration for you.
@@ -897,7 +898,7 @@ Now let's create an IAM user with an Access Key and attach the policy we've just
       * IAM Profile: The profile we created in Step 1.2
       * Application: my-wordpress-site 
       * Environment: Staging
-      * S3 Bucket: Sign-in to the AWS Management Console and open the Amazon S3 console at https://console.aws.amazon.com/s3, look for a bucket called elasticbeanstalk-\<AWS-REGION\>-\<AWS-ACCOUNT-ID\> and add /package 
+      * S3 Bucket: Sign-in to the AWS Management Console and open the Amazon S3 console at https://console.aws.amazon.com/s3, look for a bucket called elasticbeanstalk-\<AWS-REGION\>-\<AWS-ACCOUNT-ID\> and add **/package**
    3. Check the **enable deployment for successful builds** checkbox
 
 ## Deploying WordPress
