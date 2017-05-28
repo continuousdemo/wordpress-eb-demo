@@ -195,13 +195,13 @@
 
     <target name="wp-get-s3-backup" description="Get the S3 backup">
       <echo message="Getting S3 Wordpress backup at ${s3_backup_url}" /> 
-      <exec command="rm -f /tmp/backup.sql.gz ; aws s3 --region eu-central-1 cp ${s3_backup_url} /tmp/backup.sql.gz" passthru="true"/>
+      <exec command="rm -f /tmp/backup.sql.gz ; aws s3 --region us-east-1 cp ${s3_backup_url} /tmp/backup.sql.gz" passthru="true"/>
       <exec command="gunzip -f /tmp/backup.sql.gz" passthru="true"/>
     </target>
 
     <target name="wp-get-s3-media" description="Get the S3 Media">
       <echo message="Getting S3 Wordpress Media at ${s3_media_url}" /> 
-      <exec command="rm -f /tmp/media.zip ; aws s3 --region eu-central-1 cp ${s3_media_url} /tmp/media.zip" passthru="true"/>
+      <exec command="rm -f /tmp/media.zip ; aws s3 --region us-east-1 cp ${s3_media_url} /tmp/media.zip" passthru="true"/>
       <exec command="unzip -u /tmp/media.zip -d ${project.basedir}/wp/wp-content" passthru="true"/>
     </target>
 

@@ -5,7 +5,7 @@ services:
     container_name: wordpress_nginx
     restart: always
     volumes:
-      - .:/var/www/html/:ro
+      - .:/var/www/html/:rw
       - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     ports:
@@ -18,7 +18,7 @@ services:
     container_name: php
     restart: always
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:rw
       - ./php/upload.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./php/php.ini:/usr/local/etc/php/php.ini
     depends_on:

@@ -22,3 +22,6 @@ readme.html
 wp/
 data/*.sql
 updraft
+wp-content/plugins
+wp-content/themes
+*.local.*
